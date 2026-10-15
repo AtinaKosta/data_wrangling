@@ -24,6 +24,7 @@ penguins |> select(starts_with("b") | starts_with("f")) |> head()
 penguins |> select(starts_with("b") & ends_with("f")) |> head()
 penguins |> select(contains("_")) |> head()
 
+#task 4 FILTER and DISTINCT functions
 penguins |> distinct() |> head()
 penguins |> distinct(year) |> head()
 penguins |> distinct(species, island) |> head()
