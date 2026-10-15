@@ -17,3 +17,16 @@ penguins |> filter(body_mass < 3500 & bill_len < 35) |> count()
 
 #task 3 SELECT function
 penguins |> select(bill_len:body_mass) |> head()
+penguins |> select(starts_with("bill")) |> head()
+penguins |> select(ends_with("s")) |> head()
+penguins |> select(!species) |> head()
+penguins |> select(starts_with("b") | starts_with("f")) |> head()
+penguins |> select(starts_with("b") & ends_with("f")) |> head()
+penguins |> select(contains("_")) |> head()
+
+penguins |> distinct() |> head()
+penguins |> distinct(year) |> head()
+penguins |> distinct(species, island) |> head()
+penguins |> distinct(species, island) |> head()
+penguins |> filter(body_mass > 4000) |> select(sex) |> count(sex)
+penguins |> filter(species == "Gentoo") |> filter(island == "Biscoe") |> distinct(year) |> count()
