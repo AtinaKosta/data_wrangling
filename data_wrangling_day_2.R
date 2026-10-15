@@ -6,7 +6,6 @@ penguins |> arrange(desc(species), desc(bill_len)) |> head()
 penguins |> relocate(bill_len, .after = species) |> relocate(bill_dep, .after = species) |> relocate(flipper_len, .after = species) |> relocate(body_mass, .after = species) |> head()
 penguins |> relocate(year, .after = sex) |> head()
 
-
 #task 2 FILTER function
 penguins |> filter(species == "Adelie") |> count()
 penguins |> count(island) |> slice_max(n, n = 1) |> pull(island)
@@ -26,8 +25,37 @@ penguins |> select(contains("_")) |> head()
 
 #task 4 FILTER and DISTINCT functions
 penguins |> distinct() |> head()
-penguins |> distinct(year) |> head()
-penguins |> distinct(species, island) |> head()
 penguins |> distinct(species, island) |> head()
 penguins |> filter(body_mass > 4000) |> select(sex) |> count(sex)
 penguins |> filter(species == "Gentoo") |> filter(island == "Biscoe") |> distinct(year) |> count()
+
+#task 5 MUTATE
+penguins |> 
+  mutate(bill_dim_ratio = bill_len/bill_dep) |> 
+  arrange(desc(bill_dim_ratio)) |>
+  select(contains("_")) |>
+  head()
+
+penguins |>
+  mutate(body_mass_kg = body_mass) |>
+  select(contains("_")) |> 
+  head()
+
+penguins |>
+  mutate(flipper_to_mass_ratio = flipper_len / body_mass) |>
+  arrange(desc(flipper_to_mass_ratio)) |>
+  head()
+
+penguins |>
+  mutate(heavy = body_mass > 4.5) |>
+  head()
+
+#Task 6 MUTATE and CASE_WHEN
+penguins |> 
+  mutate(flipper_class = case_when(
+    flipper_len < 190 ~ "short",
+    flipper_len <= 210 ~ "medium",
+    TRUE ~ "long"
+  )) |> 
+  distinct(species, flipper_class)
+
