@@ -59,3 +59,44 @@ penguins |>
   )) |> 
   distinct(species, flipper_class)
 
+#Task 7 MUTATE and CASE_WHEN practice
+penguins |> 
+  mutate(size = case_when(
+    flipper_len > 205 & 
+      body_mass > 5000 ~ "big",
+    flipper_len < 190 & 
+      body_mass < 3500 ~ "small",
+    TRUE ~ "medium"
+  )) |> 
+  ggplot(mapping = aes(flipper_len,
+                       body_mass,
+                       colour = size,
+)) +
+  geom_point()
+
+penguins |> rename(f_len = flipper_len) |> head()
+
+penguins |> group_by(species, island) |> head()
+
+penguins |> 
+  group_by(species) |>
+  summarize(mean_body_mass = mean(body_mass, na.rm = TRUE))
+
+
+#Task 7 group_by different variables
+
+penguins |> 
+  group_by(species, island) |>
+  summarize(mean_body_mass = mean(body_mass, na.rm = TRUE))
+
+penguins |> 
+  group_by(species) |> 
+  filter(body_mass == max(body_mass, na.rm = TRUE))
+
+ggplot(
+  data = penguins,
+  mapping = aes(x = bill_len,
+                y = bill_dep,
+                shape = island, 
+                colour = species)) +
+  geom_point()
