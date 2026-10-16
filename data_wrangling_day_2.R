@@ -50,6 +50,7 @@ penguins |>
   mutate(heavy = body_mass > 4.5) |>
   head()
 
+library(dplyr)
 #Task 6 MUTATE and CASE_WHEN
 penguins |> 
   mutate(flipper_class = case_when(
@@ -93,6 +94,7 @@ penguins |>
   group_by(species) |> 
   filter(body_mass == max(body_mass, na.rm = TRUE))
 
+
 ggplot(
   data = penguins,
   mapping = aes(x = bill_len,
@@ -100,3 +102,4 @@ ggplot(
                 shape = island, 
                 colour = species)) +
   geom_point()
+
