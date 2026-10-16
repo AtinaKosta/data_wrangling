@@ -103,3 +103,254 @@ ggplot(
                 colour = species)) +
   geom_point()
 
+#Day 3 Plotting data
+ggplot(data = penguins,
+       mapping = aes(x = flipper_len,
+                     y = body_mass)) +
+  geom_point()
+
+ggplot(data = penguins,
+mapping = aes(x = bill_len,
+y = bill_dep)) +
+  labs(title = "Bill length and depth in penguins",
+x = "Bill length (mm)",
+y = "Bill depth (mm)") +
+  theme_minimal() +
+  geom_point()
+
+#example 2
+ggplot(data = penguins,
+       mapping = aes(x = bill_len,
+                     y = bill_dep,
+                     colour = species)) +
+    labs(title = "Bill length and depth in penguins",
+       x = "Bill length (mm)",
+       y = "Bill depth (mm)",
+       colour = "Species") +
+  theme_minimal() +
+  geom_point()
+
+#example 3
+ggplot(data = penguins,
+       mapping = aes(x = bill_len,
+                     y = bill_dep,
+                     colour = "Body_mass",
+                     shape = island, 
+                colour = species)) +
+    labs(title = "Bill length and depth in penguins",
+       x = "Bill length (mm)",
+       y = "Bill depth (mm)",
+       colour = "Species") +
+  theme_minimal() +
+  geom_point()
+
+#example 4
+ggplot(data = penguins,
+       mapping = aes(x = bill_len,
+                     y = bill_dep,
+                     colour = body_mass,
+                     shape = species)) +
+    labs(title = "Bill length and depth in penguins",
+       x = "Bill length (mm)",
+       y = "Bill depth (mm)",
+       colour = "Species") +
+  theme_minimal() +
+  geom_point()
+
+
+#example 5
+ggplot(data = penguins,
+       mapping = aes(x = bill_len,
+                     y = bill_dep,
+                     colour = body_mass,
+                     shape = species)) +
+    labs(title = "Bill length and depth in three species of penguin",
+       x = "Bill length (mm)",
+       y = "Bill depth (mm)",
+       colour = "Body mass") +
+  theme_minimal() +
+  theme(plot.title = element_text(face = "bold")) +
+  geom_point(size = 3,
+             alpha = 0.6)
+
+
+#task 7
+ggplot(data = penguins,
+       mapping = aes(x = flipper_len,
+                     y = bill_dep)) +
+      geom_point()
+
+#task 8
+ggplot(penguins,
+       aes(flipper_len,
+           bill_dep)) +
+  geom_point()
+
+
+#reducing to objects
+p_flipper_len <- ggplot(data = penguins,
+       mapping = aes(x = species,
+                     y = flipper_len)) +
+    labs(title = "Flipper length of penguins",
+       x = "Species",
+       y = "Flipper length (mm)") +
+  theme_minimal() +
+  theme(plot.title = element_text(face = "bold"))
+
+plot(p_flipper_len)
+
+?boxplot
+p_flipper_len +
+  geom_boxplot(outlier.alpha = 0) +
+  geom_jitter(size = 3,
+              varwidth = 0.25,
+              alpha = 0.5)
+
+#plotting next
+p_flipper_len +
+  geom_boxplot(outlier.alpha = 0) +
+  geom_jitter(mapping = aes(colour = species),
+              size = 3,
+              alpha = 0.6,
+              position = position_jitter(
+      width = 0.2,
+      height = 0,
+      seed = 123))
+
+?geom_jitter
+
+#task 10
+p_bm_fl <- ggplot(data = penguins,
+                  mapping = aes(x = body_mass,
+                                y = flipper_len,
+                                colour = species))
+
+p_bm_fl +
+  geom_point(size = 2,
+             alpha = 0.6) +
+  facet_wrap(~ island)
+
+
+#task 11
+p_bm_fl +
+  geom_point(size = 2,
+             alpha = 0.6) +
+  facet_grid(sex ~ island)  
+
+install.packages("patchwork")
+library(patchwork)
+
+#task 12
+p1 <- ggplot(penguins,
+              aes(x = bill_dep,
+                  y = bill_len,
+                  colour = species)) +
+      geom_point() +
+      labs(title = "Flipper length and depth",
+           x = "Bill depth (mm)",
+           y = "Bill length (mm)")
+
+p2 <- p_bm_fl +
+      labs(title = "Body mass and flipper length",
+           x = "Flipper length (mm)",
+           y = "Body mass (g)") +
+      geom_point() 
+
+p1+p2
+p1 / p2
+
+#task 12
+p_bm_fl +
+  geom_point(size = 2,
+             alpha = 0.6) +
+  facet_wrap(~ island) +
+  geom_smooth(
+    mapping = aes(group = island),
+    method = "lm",
+    colour = "darkgrey")
+
+#task 13
+set.seed(0982)
+month_data <- tibble(
+  date = seq(as.Date("2024-12-01"), 
+              as.Date("2024-12-31"), 
+              by = "day"),
+  count = sample(1:20, 31, replace = TRUE)  # Random counts per day
+) |>
+  mutate(
+    wday = wday(date, label = TRUE, abbr = TRUE),  # Day of the week (Sun-Sat)
+    week = (day(date) - 1) %/% 7 + 1  # Week number (1 to 5)
+  )
+
+month_data |> head() 
+
+#heatmap visualization
+ggplot(data = month_data,
+       mapping = aes(x = week, 
+                      y = wday, 
+                      fill = count)) +
+  geom_tile()
+
+
+#solution
+ggplot(data = month_data,
+mapping = aes(x = wday,
+y = week,
+fill = count)) 
+
+ggplot(data = month_data,
+       mapping = aes(x = wday,
+                     y = week,
+                     fill = count)) +
+  geom_tile(colour = "white") +
+  scale_y_reverse() +
+  theme_classic() + # removes background gridlines
+  labs(title = "December 2024 Calendar Heatmap",
+       x = "Days",
+       y = "Week",
+       fill = "Count")
+
+
+#plotting next
+p_flipper_len +
+  geom_boxplot(outlier.alpha = 0) +
+  geom_jitter(mapping = aes(colour = species),
+              size = 3,
+              alpha = 0.6,
+              position = position_jitter(
+      width = 0.2,
+      height = 0,
+      seed = 123))  
+
+?aes
+
+
+
+#visualizing change over time
+set.seed(02) # Please set this seed for this example
+
+# Create stock price data for three different stocks
+dates <- seq.Date(from = as.Date("2024-01-01"), 
+                  by = "week", 
+                  length.out = 200)
+
+stocks <- tibble(
+  date = rep(dates, times = 3),
+  stock = rep(c("Stock A", "Stock B", "Stock C"), each = length(dates)),
+  price = c(
+    100 + cumsum(rnorm(length(dates), mean = 0, sd = 5)),  # Stock A fluctuates around 100
+    80 + cumsum(rnorm(length(dates), mean = 0, sd = 4)),   # Stock B fluctuates around 80
+    120 + cumsum(rnorm(length(dates), mean = 0, sd = 6))   # Stock C fluctuates around 120
+  )
+)
+
+#plotting
+ggplot(stocks |>  filter(stock == "Stock C"), 
+        aes(x = date, 
+            y = price)) +
+  geom_line() +
+  labs(title = "Stock C Price Over Time", 
+        x = "Date", 
+        y = "Price") +
+  theme_minimal()
+
